@@ -1,0 +1,139 @@
+.sidebar {
+  width: 240px;
+  height: 100vh;
+  background-color: var(--neutral-800);
+  color: var(--neutral-100);
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  transition: width var(--transition-normal);
+  z-index: 100;
+  box-shadow: var(--shadow-lg);
+}
+
+.sidebar.collapsed {
+  width: 80px;
+}
+
+.sidebar-header {
+  padding: var(--space-4);
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid var(--neutral-700);
+}
+
+.sidebar-header h2 {
+  color: var(--neutral-50);
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.user-info {
+  padding: var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--primary-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: white;
+}
+
+.user-details {
+  overflow: hidden;
+}
+
+.user-name {
+  font-weight: 500;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+}
+
+.user-role {
+  font-size: 0.75rem;
+  color: var(--neutral-400);
+  margin: 0;
+}
+
+.sidebar-nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0 var(--space-2);
+  overflow-y: auto;
+}
+
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  color: var(--neutral-300);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-2);
+  transition: all var(--transition-fast);
+}
+
+.sidebar-nav a:hover {
+  background-color: var(--neutral-700);
+  color: var(--neutral-100);
+}
+
+.sidebar-nav a.active {
+  background-color: var(--primary-600);
+  color: white;
+}
+
+.sidebar-footer {
+  padding: var(--space-4);
+  border-top: 1px solid var(--neutral-700);
+}
+
+.logout-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  background-color: transparent;
+  border: 1px solid var(--neutral-600);
+  color: var(--neutral-300);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.logout-button:hover {
+  background-color: var(--error-500);
+  border-color: var(--error-500);
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  
+  .sidebar.collapsed {
+    transform: translateX(0);
+    width: 80px;
+  }
+}

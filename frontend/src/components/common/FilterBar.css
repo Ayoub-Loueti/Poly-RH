@@ -1,0 +1,129 @@
+.filter-bar {
+  position: relative;
+}
+
+.filter-toggle {
+  background-color: white;
+  border: 1px solid var(--neutral-300);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.875rem;
+  color: var(--neutral-700);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.filter-toggle:hover {
+  border-color: var(--primary-400);
+}
+
+.chevron {
+  transition: transform var(--transition-fast);
+}
+
+.chevron.open {
+  transform: rotate(180deg);
+}
+
+.filter-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  background-color: white;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--neutral-200);
+  width: 300px;
+  z-index: 100;
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  animation: slideDown var(--transition-fast);
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.filter-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--neutral-600);
+}
+
+.filter-select {
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--neutral-300);
+  font-size: 0.875rem;
+  color: var(--neutral-800);
+  background-color: white;
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.filter-select:focus {
+  border-color: var(--primary-400);
+}
+
+.filter-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--space-2);
+}
+
+.filter-reset {
+  padding: var(--space-2) var(--space-3);
+  background-color: white;
+  border: 1px solid var(--neutral-300);
+  border-radius: var(--radius-md);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--neutral-700);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.filter-reset:hover {
+  background-color: var(--neutral-100);
+}
+
+.filter-apply {
+  padding: var(--space-2) var(--space-3);
+  background-color: var(--primary-500);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: white;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.filter-apply:hover {
+  background-color: var(--primary-600);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .filter-dropdown {
+    width: 250px;
+    right: -30px;
+  }
+}

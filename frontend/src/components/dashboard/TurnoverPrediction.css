@@ -1,0 +1,168 @@
+.turnover-prediction {
+  width: 100%;
+}
+
+.risk-summary {
+  background-color: var(--neutral-50);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.risk-metrics {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.risk-metric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.risk-metric-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--neutral-900);
+}
+
+.risk-metric-label {
+  font-size: 0.75rem;
+  color: var(--neutral-600);
+  max-width: 120px;
+}
+
+.risk-section-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--neutral-700);
+  margin-bottom: var(--space-3);
+}
+
+.risk-employees {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: var(--space-4);
+}
+
+.risk-employee-card {
+  background-color: var(--neutral-50);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  border: 1px solid var(--neutral-200);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.risk-employee-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.risk-employee-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-3);
+}
+
+.risk-employee-info h4 {
+  margin: 0 0 var(--space-1);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--neutral-900);
+}
+
+.risk-employee-info p {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--neutral-500);
+}
+
+.risk-score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.risk-score-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.risk-score-circle span {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--neutral-900);
+}
+
+.risk-factors {
+  margin-bottom: var(--space-3);
+}
+
+.risk-factors h5 {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--neutral-700);
+  margin: 0 0 var(--space-2);
+}
+
+.risk-factors ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.risk-factors li {
+  font-size: 0.75rem;
+  color: var(--neutral-700);
+  padding: var(--space-1) 0;
+  position: relative;
+  padding-left: var(--space-3);
+}
+
+.risk-factors li:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--error-400);
+}
+
+.intervention-button {
+  width: 100%;
+  background-color: white;
+  border: 1px solid var(--primary-500);
+  color: var(--primary-500);
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.intervention-button:hover {
+  background-color: var(--primary-500);
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .risk-metrics {
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  
+  .risk-employees {
+    grid-template-columns: 1fr;
+  }
+}

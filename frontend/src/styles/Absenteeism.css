@@ -1,0 +1,192 @@
+.absenteeism-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.absenteeism-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.absenteeism-subtitle {
+  color: var(--neutral-600);
+  font-size: 0.875rem;
+  margin-top: -16px;
+  margin-bottom: 0;
+}
+
+.absenteeism-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+}
+
+.metric-card {
+  background-color: white;
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  border: 1px solid var(--neutral-200);
+  box-shadow: var(--shadow-sm);
+}
+
+.metric-card h3 {
+  font-size: 0.875rem;
+  color: var(--neutral-600);
+  margin: 0 0 var(--space-2);
+}
+
+.metric-value {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--neutral-900);
+  margin-bottom: var(--space-2);
+}
+
+.metric-change {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.metric-change.positive {
+  color: var(--success-500);
+}
+
+.metric-change.negative {
+  color: var(--error-500);
+}
+
+.visualization-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+
+.span-2 {
+  grid-column: span 2;
+}
+
+/* Chart placeholders */
+.chart-placeholder {
+  width: 100%;
+  height: 300px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  padding: var(--space-4);
+}
+
+.bar-chart .bar-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+}
+
+.bar-chart .bar {
+  width: 15%;
+  background-color: var(--primary-500);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  transition: height var(--transition-normal);
+}
+
+.line-chart {
+  position: relative;
+  flex-direction: row;
+  align-items: center;
+}
+
+.line-segment {
+  position: relative;
+  height: 2px;
+  background-color: var(--primary-500);
+  flex: 1;
+}
+
+.line-segment::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--primary-500);
+  top: -2px;
+  right: 0;
+}
+
+.line-segment.up {
+  transform: rotate(-15deg);
+}
+
+.line-segment.down {
+  transform: rotate(15deg);
+}
+
+.pie-chart {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+
+.pie-segment {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  clip-path: polygon(50% 50%, 100% 0, 100% 100%);
+  transform-origin: center;
+}
+
+.pie-segment.s1 {
+  background-color: var(--primary-500);
+  transform: rotate(0deg);
+}
+
+.pie-segment.s2 {
+  background-color: var(--secondary-500);
+  transform: rotate(90deg);
+}
+
+.pie-segment.s3 {
+  background-color: var(--warning-500);
+  transform: rotate(180deg);
+}
+
+.pie-segment.s4 {
+  background-color: var(--success-500);
+  transform: rotate(270deg);
+}
+
+@media (max-width: 1024px) {
+  .absenteeism-metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .visualization-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .span-2 {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .absenteeism-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+  
+  .absenteeism-metrics {
+    grid-template-columns: 1fr;
+  }
+  
+  .chart-placeholder {
+    height: 250px;
+  }
+}
