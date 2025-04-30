@@ -4,6 +4,8 @@ import KpiCard from '../components/dashboard/KpiCard';
 import VisualizationCard from '../components/dashboard/VisualizationCard';
 import DepartmentComparison from '../components/dashboard/DepartmentComparison';
 import TurnoverPrediction from '../components/dashboard/TurnoverPrediction';
+import DepartmentDistribution from '../components/dashboard/DepatmentDistribution';
+import AgeDistribution from '../components/dashboard/AgeDistribution';
 import FilterBar from '../components/common/FilterBar';
 import '../styles/Dashboard.css';
 
@@ -75,12 +77,7 @@ const Dashboard: React.FC = () => {
           subtitle="Active employees"
           icon={<PieChart size={18} />}
         >
-          <div className="chart-placeholder pie-chart">
-            <div className="pie-segment s1"></div>
-            <div className="pie-segment s2"></div>
-            <div className="pie-segment s3"></div>
-            <div className="pie-segment s4"></div>
-          </div>
+          <DepartmentDistribution />
         </VisualizationCard>
         
         <VisualizationCard 
@@ -88,15 +85,7 @@ const Dashboard: React.FC = () => {
           subtitle="By age groups"
           icon={<BarChart size={18} />}
         >
-          <div className="chart-placeholder bar-chart">
-            <div className="bar-container">
-              <div className="bar" style={{ height: '30%' }}></div>
-              <div className="bar" style={{ height: '70%' }}></div>
-              <div className="bar" style={{ height: '95%' }}></div>
-              <div className="bar" style={{ height: '60%' }}></div>
-              <div className="bar" style={{ height: '40%' }}></div>
-            </div>
-          </div>
+          <AgeDistribution />
         </VisualizationCard>
         
         <VisualizationCard 

@@ -50,7 +50,7 @@ const Employees: React.FC = () => {
 
   const fetchEmployees = async (page: number) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/employees?page=${page}&limit=10`, {
+      const response = await fetch(`http://localhost:5000/employees?page=${page}&limit=10`, {
         headers: {
           'Content-Type': 'application/json',
         },

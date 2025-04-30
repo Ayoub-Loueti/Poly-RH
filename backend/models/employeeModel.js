@@ -35,6 +35,10 @@ const Employee = sequelize.define('Employee', {
   salary: {
     type: DataTypes.DECIMAL(10, 2),
     allowNull: false
+  },
+  age_employee: {
+    type: DataTypes.ENUM('homme', 'femme'),
+    allowNull: false
   }
 }, {
   tableName: 'employees',

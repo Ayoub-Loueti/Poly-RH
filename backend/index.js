@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const userRoutes = require('./routes/userRoute');
 const employeeRoutes = require('./routes/employeeRoutes');
+const dashboardRoutes = require('./routes/dshboardRoutes');
 
 const app = express();
 
@@ -11,7 +12,8 @@ app.use(express.json());
 
 // Routes
 app.use('/users', userRoutes);
-app.use('/api/employees', employeeRoutes);
+app.use('/employees', employeeRoutes);
+app.use('/dashboard', dashboardRoutes);
 
 // Test route
 app.get('/test', (req, res) => {
