@@ -1,19 +1,107 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { UserPlus, Search, Filter, MoreHorizontal } from 'lucide-react';
 import '../styles/Employees.css';
 
-const employeeData = [
-  { id: 'EMP001', name: 'John Doe', department: 'Engineering', position: 'Senior Developer', status: 'Active', joinDate: '2020-05-15', performance: 92 },
-  { id: 'EMP002', name: 'Jane Smith', department: 'Marketing', position: 'Marketing Manager', status: 'Active', joinDate: '2019-11-23', performance: 88 },
-  { id: 'EMP003', name: 'Robert Johnson', department: 'Sales', position: 'Sales Representative', status: 'Active', joinDate: '2021-02-10', performance: 76 },
-  { id: 'EMP004', name: 'Emily Brown', department: 'HR', position: 'HR Specialist', status: 'On Leave', joinDate: '2018-07-19', performance: 85 },
-  { id: 'EMP005', name: 'Michael Wilson', department: 'Finance', position: 'Financial Analyst', status: 'Active', joinDate: '2022-01-05', performance: 90 },
-  { id: 'EMP006', name: 'Sarah Davis', department: 'Engineering', position: 'UI/UX Designer', status: 'Active', joinDate: '2020-09-12', performance: 94 },
-  { id: 'EMP007', name: 'David Miller', department: 'Sales', position: 'Sales Manager', status: 'Active', joinDate: '2019-03-28', performance: 82 },
-  { id: 'EMP008', name: 'Jessica Wilson', department: 'Marketing', position: 'Content Specialist', status: 'Inactive', joinDate: '2021-06-17', performance: 65 },
-];
+// Use the same key as in Login component
+const USER_STORAGE_KEY = 'polyrh_user';
+
+interface Employee {
+  employee_id: number;
+  first_name: string;
+  last_name: string;
+  birth_date: string;
+  hire_date: string;
+  department_id: number;
+  position: string;
+  salary: number;
+}
+
+interface PaginationInfo {
+  currentPage: number;
+  totalPages: number;
+  totalItems: number;
+  itemsPerPage: number;
+}
 
 const Employees: React.FC = () => {
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [paginationInfo, setPaginationInfo] = useState<PaginationInfo>({
+    currentPage: 1,
+    totalPages: 1,
+    totalItems: 0,
+    itemsPerPage: 10
+  });
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if user is logged in
+    const userData = localStorage.getItem(USER_STORAGE_KEY);
+    if (!userData) {
+      navigate('/login');
+      return;
+    }
+
+    fetchEmployees(currentPage);
+  }, [navigate, currentPage]);
+
+  const fetchEmployees = async (page: number) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/employees?page=${page}&limit=10`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch employees');
+      }
+
+      const data = await response.json();
+      setEmployees(data.employees);
+      setPaginationInfo(data.pagination);
+      setLoading(false);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+      setLoading(false);
+    }
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const renderPaginationNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(paginationInfo.totalPages, startPage + maxVisiblePages - 1);
+
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(
+        <button
+          key={i}
+          className={`pagination-number ${i === currentPage ? 'active' : ''}`}
+          onClick={() => handlePageChange(i)}
+        >
+          {i}
+        </button>
+      );
+    }
+
+    return pages;
+  };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
   return (
     <div className="employees-page">
       <div className="employees-header">
@@ -43,35 +131,26 @@ const Employees: React.FC = () => {
         <table className="employees-table">
           <thead>
             <tr>
-              <th>Employee ID</th>
+              <th>ID</th>
               <th>Name</th>
-              <th>Department</th>
+              <th>Birth Date</th>
+              <th>Hire Date</th>
+              <th>Department ID</th>
               <th>Position</th>
-              <th>Status</th>
-              <th>Join Date</th>
-              <th>Performance</th>
+              <th>Salary</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {employeeData.map((employee) => (
-              <tr key={employee.id}>
-                <td>{employee.id}</td>
-                <td className="employee-name">{employee.name}</td>
-                <td>{employee.department}</td>
+            {employees.map((employee) => (
+              <tr key={employee.employee_id}>
+                <td>{employee.employee_id}</td>
+                <td className="employee-name">{`${employee.first_name} ${employee.last_name}`}</td>
+                <td>{formatDate(employee.birth_date)}</td>
+                <td>{formatDate(employee.hire_date)}</td>
+                <td>{employee.department_id}</td>
                 <td>{employee.position}</td>
-                <td>
-                  <span className={`status-badge ${employee.status.toLowerCase().replace(' ', '-')}`}>
-                    {employee.status}
-                  </span>
-                </td>
-                <td>{formatDate(employee.joinDate)}</td>
-                <td>
-                  <div className="performance-container">
-                    <div className="performance-bar" style={{ width: `${employee.performance}%`, backgroundColor: getPerformanceColor(employee.performance) }}></div>
-                    <span>{employee.performance}%</span>
-                  </div>
-                </td>
+                <td>${employee.salary.toLocaleString()}</td>
                 <td>
                   <button className="action-button">
                     <MoreHorizontal size={16} />
@@ -84,15 +163,23 @@ const Employees: React.FC = () => {
       </div>
       
       <div className="pagination">
-        <button className="pagination-button" disabled>Previous</button>
+        <button 
+          className="pagination-button" 
+          disabled={currentPage === 1}
+          onClick={() => handlePageChange(currentPage - 1)}
+        >
+          Previous
+        </button>
         <div className="pagination-numbers">
-          <button className="pagination-number active">1</button>
-          <button className="pagination-number">2</button>
-          <button className="pagination-number">3</button>
-          <span>...</span>
-          <button className="pagination-number">10</button>
+          {renderPaginationNumbers()}
         </div>
-        <button className="pagination-button">Next</button>
+        <button 
+          className="pagination-button"
+          disabled={currentPage === paginationInfo.totalPages}
+          onClick={() => handlePageChange(currentPage + 1)}
+        >
+          Next
+        </button>
       </div>
     </div>
   );
@@ -105,13 +192,6 @@ function formatDate(dateString: string): string {
     month: 'short', 
     day: 'numeric' 
   }).format(date);
-}
-
-function getPerformanceColor(value: number): string {
-  if (value >= 90) return 'var(--success-500)';
-  if (value >= 80) return 'var(--primary-500)';
-  if (value >= 70) return 'var(--warning-500)';
-  return 'var(--error-500)';
 }
 
 export default Employees;
