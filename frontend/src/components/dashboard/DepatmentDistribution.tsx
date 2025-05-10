@@ -11,36 +11,42 @@ interface DepartmentData {
   percentage: string;
 }
 
-const DepartmentDistribution: React.FC = () => {
+interface DepartmentDistributionProps {
+  timeFilter: string;
+}
+
+const DepartmentDistribution: React.FC<DepartmentDistributionProps> = ({ timeFilter }) => {
   const [departmentData, setDepartmentData] = useState<DepartmentData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchDepartmentStats = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/dashboard/depStats', {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        
-        if (response.data && Array.isArray(response.data.data)) {
-          setDepartmentData(response.data.data);
-        } else {
-          console.error('Invalid response format:', response.data);
-          setError('Invalid data format received from server');
-        }
-        setLoading(false);
-      } catch (err) {
-        console.error('Error fetching department stats:', err);
-        setError('Failed to fetch department statistics. Please try again later.');
-        setLoading(false);
+  const fetchDepartmentStats = async (filter: string) => {
+    try {
+      setLoading(true);
+      const response = await axios.get(`http://localhost:5000/dashboard/depStats?filter=${filter}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      if (response.data && Array.isArray(response.data.data)) {
+        setDepartmentData(response.data.data);
+        setError(null);
+      } else {
+        console.error('Invalid response format:', response.data);
+        setError('Invalid data format received from server');
       }
-    };
+    } catch (err) {
+      console.error('Error fetching department stats:', err);
+      setError('Failed to fetch department statistics. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchDepartmentStats();
-  }, []);
+  useEffect(() => {
+    fetchDepartmentStats(timeFilter);
+  }, [timeFilter]);
 
   if (loading) {
     return <div className="loading">Loading department statistics...</div>;

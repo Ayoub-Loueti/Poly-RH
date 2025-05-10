@@ -19,31 +19,37 @@ interface ApiResponse {
     };
 }
 
-const AgeDistribution: React.FC = () => {
+interface AgeDistributionProps {
+    timeFilter: string;
+}
+
+const AgeDistribution: React.FC<AgeDistributionProps> = ({ timeFilter }) => {
     const [data, setData] = useState<AgeData[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        const fetchAgeDistribution = async () => {
-            try {
-                const response = await axios.get<ApiResponse>('http://localhost:5000/dashboard/ageDistribution');
-                const formattedData = Object.entries(response.data.ageDistribution).map(([ageGroup, counts]) => ({
-                    ageGroup,
-                    homme: counts.homme,
-                    femme: counts.femme
-                }));
-                setData(formattedData);
-                setLoading(false);
-            } catch (err) {
-                setError('Failed to fetch age distribution data');
-                setLoading(false);
-                console.error('Error fetching age distribution:', err);
-            }
-        };
+    const fetchAgeDistribution = async (filter: string) => {
+        try {
+            setLoading(true);
+            const response = await axios.get<ApiResponse>(`http://localhost:5000/dashboard/ageDistribution?filter=${filter}`);
+            const formattedData = Object.entries(response.data.ageDistribution).map(([ageGroup, counts]) => ({
+                ageGroup,
+                homme: counts.homme,
+                femme: counts.femme
+            }));
+            setData(formattedData);
+            setError(null);
+        } catch (err) {
+            setError('Failed to fetch age distribution data');
+            console.error('Error fetching age distribution:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
-        fetchAgeDistribution();
-    }, []);
+    useEffect(() => {
+        fetchAgeDistribution(timeFilter);
+    }, [timeFilter]);
 
     if (loading) return <div className="age-distribution-chart">Loading...</div>;
     if (error) return <div className="age-distribution-chart">{error}</div>;

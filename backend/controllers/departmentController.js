@@ -11,11 +11,11 @@ exports.getDepartmentStats = async (req, res) => {
 
     // Determine date threshold based on filter
     if (filter === '30d') {
-      dateThreshold = new Date(now.setDate(now.getDate() - 30));
+      dateThreshold = new Date(now.getTime() - (30 * 24 * 60 * 60 * 1000));
     } else if (filter === '90d') {
-      dateThreshold = new Date(now.setDate(now.getDate() - 90));
-    } else if (filter === '365d') {
-      dateThreshold = new Date(now.setDate(now.getDate() - 365));
+      dateThreshold = new Date(now.getTime() - (90 * 24 * 60 * 60 * 1000));
+    } else if (filter === '1y') {
+      dateThreshold = new Date(now.getTime() - (365 * 24 * 60 * 60 * 1000));
     }
 
     // Build where clause for date filtering
@@ -66,7 +66,11 @@ exports.getDepartmentStats = async (req, res) => {
 
     return res.status(200).json({
       message: `Stats for filter "${filter}"`,
-      data: stats
+      data: stats,
+      debug: {
+        dateThreshold,
+        totalEmployees: employees.length
+      }
     });
 
   } catch (error) {
@@ -76,42 +80,72 @@ exports.getDepartmentStats = async (req, res) => {
 };
 
 exports.getAgeDistribution = async (req, res) => {
-    try {
-      const now = new Date();
-      const currentYear = now.getFullYear();
-  
-      const employees = await Employee.findAll({
-        attributes: [
-          [Sequelize.literal(`${currentYear} - YEAR(birth_date)`), 'age'],
-          'age_employee'
-        ]
-      });
-  
-      const ranges = {
-        '20-30': { homme: 0, femme: 0 },
-        '30-40': { homme: 0, femme: 0 },
-        '40-50': { homme: 0, femme: 0 },
-        '50-60': { homme: 0, femme: 0 },
-      };
-  
-      employees.forEach(emp => {
-        const age = parseInt(emp.get('age'));
-        const gender = emp.age_employee;
-  
-        if (age >= 20 && age < 30) ranges['20-30'][gender]++;
-        else if (age >= 30 && age < 40) ranges['30-40'][gender]++;
-        else if (age >= 40 && age < 50) ranges['40-50'][gender]++;
-        else if (age >= 50 && age < 60) ranges['50-60'][gender]++;
-      });
-  
-      res.status(200).json({
-        message: 'Employee age distribution by gender',
-        data: ranges
-      });
-    } catch (error) {
-      console.error('Error getting age distribution:', error);
-      res.status(500).json({ message: 'Server error while calculating age distribution' });
+  try {
+    const { filter = 'all' } = req.query;
+
+    let dateThreshold = null;
+    const now = new Date();
+
+    // Determine date threshold based on filter
+    if (filter === '30d') {
+      dateThreshold = new Date(now.getTime() - (30 * 24 * 60 * 60 * 1000));
+    } else if (filter === '90d') {
+      dateThreshold = new Date(now.getTime() - (90 * 24 * 60 * 60 * 1000));
+    } else if (filter === '1y') {
+      dateThreshold = new Date(now.getTime() - (365 * 24 * 60 * 60 * 1000));
     }
-  };
+
+    // Build where clause for date filtering
+    let whereClause = {};
+    if (dateThreshold) {
+      whereClause.hire_date = { [Op.gte]: dateThreshold };
+    }
+
+    // Fetch employees with their birth dates
+    const employees = await Employee.findAll({
+      where: whereClause,
+      attributes: ['birth_date', 'age_employee', 'hire_date']
+    });
+
+    // Initialize age distribution object
+    const ageDistribution = {
+      "20-30": { homme: 0, femme: 0 },
+      "30-40": { homme: 0, femme: 0 },
+      "40-50": { homme: 0, femme: 0 },
+      "50-60": { homme: 0, femme: 0 }
+    };
+
+    // Calculate age and categorize employees
+    employees.forEach(employee => {
+      const birthDate = new Date(employee.birth_date);
+      const age = now.getFullYear() - birthDate.getFullYear();
+      const gender = employee.age_employee;
+
+      if (age >= 20 && age < 30) {
+        ageDistribution["20-30"][gender]++;
+      } else if (age >= 30 && age < 40) {
+        ageDistribution["30-40"][gender]++;
+      } else if (age >= 40 && age < 50) {
+        ageDistribution["40-50"][gender]++;
+      } else if (age >= 50 && age <= 60) {
+        ageDistribution["50-60"][gender]++;
+      }
+    });
+
+    return res.status(200).json({
+      message: `Age distribution for filter "${filter}"`,
+      ageDistribution,
+      debug: {
+        dateThreshold,
+        totalEmployees: employees.length,
+        firstEmployeeHireDate: employees[0]?.hire_date
+      }
+    });
+
+  } catch (error) {
+    console.error('Error getting age distribution:', error);
+    return res.status(500).json({ message: 'Server error while calculating age distribution' });
+  }
+};
 
 module.exports = exports; 

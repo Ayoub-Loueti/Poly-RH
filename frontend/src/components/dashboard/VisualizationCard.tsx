@@ -7,6 +7,7 @@ interface VisualizationCardProps {
   icon?: ReactNode;
   children: ReactNode;
   className?: string;
+  onTimeFilterChange?: (filter: string) => void;
 }
 
 const VisualizationCard: React.FC<VisualizationCardProps> = ({
@@ -14,8 +15,15 @@ const VisualizationCard: React.FC<VisualizationCardProps> = ({
   subtitle,
   icon,
   children,
-  className = ''
+  className = '',
+  onTimeFilterChange
 }) => {
+  const handleTimeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    if (onTimeFilterChange) {
+      onTimeFilterChange(event.target.value);
+    }
+  };
+
   return (
     <div className={`visualization-card ${className}`}>
       <div className="visualization-header">
@@ -27,10 +35,11 @@ const VisualizationCard: React.FC<VisualizationCardProps> = ({
           </div>
         </div>
         <div className="visualization-actions">
-          <select className="time-selector">
-            <option value="30">Last 30 days</option>
-            <option value="90">Last 90 days</option>
-            <option value="365">Last year</option>
+          <select className="time-selector" onChange={handleTimeChange} defaultValue="all">
+            <option value="all">All time</option>
+            <option value="30d">Last 30 days</option>
+            <option value="90d">Last 90 days</option>
+            <option value="1y">Last year</option>
           </select>
         </div>
       </div>

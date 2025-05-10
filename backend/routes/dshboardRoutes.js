@@ -5,6 +5,6 @@ const employeeController = require('../controllers/employeeController');
 
 // Get all employees
 router.get('/depStats', dashboardController.getDepartmentStats);
-router.get('/ageDistribution', employeeController.getAgeDistributionByGender);
+router.get('/ageDistribution', dashboardController.getAgeDistribution);
 
 module.exports = router; 

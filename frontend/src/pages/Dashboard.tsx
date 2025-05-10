@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BarChart, LineChart, PieChart, ArrowUpRight, ArrowDownRight, Users, Calendar, TrendingDown, Award } from 'lucide-react';
 import KpiCard from '../components/dashboard/KpiCard';
 import VisualizationCard from '../components/dashboard/VisualizationCard';
@@ -10,6 +10,9 @@ import FilterBar from '../components/common/FilterBar';
 import '../styles/Dashboard.css';
 
 const Dashboard: React.FC = () => {
+  const [ageFilter, setAgeFilter] = useState('all');
+  const [deptFilter, setDeptFilter] = useState('all');
+
   return (
     <div className="dashboard">
       <div className="dashboard-header">
@@ -76,16 +79,18 @@ const Dashboard: React.FC = () => {
           title="Department Distribution" 
           subtitle="Active employees"
           icon={<PieChart size={18} />}
+          onTimeFilterChange={setDeptFilter}
         >
-          <DepartmentDistribution />
+          <DepartmentDistribution timeFilter={deptFilter} />
         </VisualizationCard>
         
         <VisualizationCard 
           title="Age Distribution" 
           subtitle="By age groups"
           icon={<BarChart size={18} />}
+          onTimeFilterChange={setAgeFilter}
         >
-          <AgeDistribution />
+          <AgeDistribution timeFilter={ageFilter} />
         </VisualizationCard>
         
         <VisualizationCard 
