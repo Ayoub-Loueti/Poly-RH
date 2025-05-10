@@ -18,6 +18,18 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed }) => {
   const { logout, user } = useAuth();
   const navigate = useNavigate();
 
+  // Get role from localStorage
+  let isAdmin = false;
+  try {
+    const userData = localStorage.getItem(USER_STORAGE_KEY);
+    if (userData) {
+      const parsed = JSON.parse(userData);
+      isAdmin = parsed.role === 'admin';
+    }
+  } catch (e) {
+    isAdmin = false;
+  }
+
   const handleLogout = () => {
     logout();
     // Also remove from localStorage directly to ensure consistency
@@ -54,10 +66,12 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed }) => {
           <Users size={20} />
           {!collapsed && <span>Employees</span>}
         </NavLink>
-        <NavLink to="/rhcom" className={({ isActive }) => isActive ? 'active' : ''}>
-          <UserPlus size={20} />
-          {!collapsed && <span>RH Community</span>}
-        </NavLink>
+        {isAdmin && (
+          <NavLink to="/rhcom" className={({ isActive }) => isActive ? 'active' : ''}>
+            <UserPlus size={20} />
+            {!collapsed && <span>RH Community</span>}
+          </NavLink>
+        )}
         <NavLink to="/turnover" className={({ isActive }) => isActive ? 'active' : ''}>
           <TrendingDown size={20} />
           {!collapsed && <span>Turnover</span>}
