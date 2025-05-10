@@ -79,7 +79,7 @@ const RHCom: React.FC = () => {
       if (!response.ok) {
         throw new Error('Failed to toggle block status');
       }
-      const data = await response.json();
+      //       const data = await response.json();
       // Update the employee in the state
       setUsers((prev) =>
         prev.map((user) =>
