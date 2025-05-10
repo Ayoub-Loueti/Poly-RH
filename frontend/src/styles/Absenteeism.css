@@ -44,6 +44,11 @@
   margin-bottom: var(--space-2);
 }
 
+.metric-value.error {
+  color: var(--error-500);
+  font-size: 1rem;
+}
+
 .metric-change {
   font-size: 0.875rem;
   font-weight: 500;
@@ -189,4 +194,24 @@
   .chart-placeholder {
     height: 250px;
   }
+}
+
+.loading,
+.error,
+.no-data {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  width: 100%;
+  color: var(--neutral-600);
+  font-size: 0.875rem;
+}
+
+.error {
+  color: var(--error-500);
+}
+
+.no-data {
+  color: var(--neutral-500);
 }

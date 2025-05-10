@@ -3,6 +3,7 @@ const cors = require('cors');
 const userRoutes = require('./routes/userRoute');
 const employeeRoutes = require('./routes/employeeRoutes');
 const dashboardRoutes = require('./routes/dshboardRoutes');
+const absenceRoutes = require('./routes/absenceRoutes');
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use('/users', userRoutes);
 app.use('/employees', employeeRoutes);
 app.use('/dashboard', dashboardRoutes);
+app.use('/api/absences', absenceRoutes);
 
 // Test route
 app.get('/test', (req, res) => {
