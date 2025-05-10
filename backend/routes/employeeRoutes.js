@@ -5,9 +5,7 @@ const employeeController = require('../controllers/employeeController');
 // Get all employees
 router.get('/', employeeController.getAllEmployees);
 
-// Test route
-router.get('/test', (req, res) => {
-  res.json({ message: 'Employee routes are working!' });
-});
+router.get('/rhemploye', employeeController.getAllEmployeesRH);
+
 
 module.exports = router; 

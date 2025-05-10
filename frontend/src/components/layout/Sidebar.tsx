@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { 
   BarChart, Users, TrendingDown, Clock, 
-  Award, FileText, Settings, LogOut, BarChart2 
+  Award, FileText, Settings, LogOut, BarChart2, UserPlus 
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import './Sidebar.css';
@@ -53,6 +53,10 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed }) => {
         <NavLink to="/employees" className={({ isActive }) => isActive ? 'active' : ''}>
           <Users size={20} />
           {!collapsed && <span>Employees</span>}
+        </NavLink>
+        <NavLink to="/rhcom" className={({ isActive }) => isActive ? 'active' : ''}>
+          <UserPlus size={20} />
+          {!collapsed && <span>RH Community</span>}
         </NavLink>
         <NavLink to="/turnover" className={({ isActive }) => isActive ? 'active' : ''}>
           <TrendingDown size={20} />

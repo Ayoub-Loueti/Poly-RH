@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Layout } from './components/layout/Layout';
 import Dashboard from './pages/Dashboard';
 import Employees from './pages/Employees';
+import RHCom from './pages/RHCom';
 import Turnover from './pages/Turnover';
 import Absenteeism from './pages/Absenteeism';
 import Performance from './pages/Performance';
@@ -23,6 +24,7 @@ function App() {
             <Route path="/" element={<ProtectedRoute element={<Layout />} />}>
               <Route index element={<Dashboard />} />
               <Route path="employees" element={<Employees />} />
+              <Route path="RHCom" element={<RHCom />} />
               <Route path="turnover" element={<Turnover />} />
               <Route path="absenteeism" element={<Absenteeism />} />
               <Route path="performance" element={<Performance />} />

@@ -1,5 +1,5 @@
 const { Op } = require('sequelize');
-const Employee = require('../models/employeeModel');
+const User = require('../models/userModel');
 const Department = require('../models/departmentModel');
 
 exports.getDepartmentStats = async (req, res) => {
@@ -27,30 +27,30 @@ exports.getDepartmentStats = async (req, res) => {
     // Fetch all departments
     const departments = await Department.findAll();
 
-    // Fetch filtered employees
-    const employees = await Employee.findAll({ where: whereClause });
+    // Fetch filtered users
+    const users = await User.findAll({ where: whereClause });
 
-    if (!employees || employees.length === 0) {
+    if (!users || users.length === 0) {
       return res.status(200).json({
-        message: 'No employees found in this period',
+        message: 'No users found in this period',
         data: departments.map(dep => ({
           department_id: dep.department_id,
           department_name: dep.department_name,
-          employee_count: 0,
+          user_count: 0,
           percentage: '00.00%'
         }))
       });
     }
 
-    // Count employees per department
-    const total = employees.length;
+    // Count users per department
+    const total = users.length;
     const departmentCounts = {};
 
-    employees.forEach(emp => {
-      if (!departmentCounts[emp.department_id]) {
-        departmentCounts[emp.department_id] = 0;
+    users.forEach(user => {
+      if (!departmentCounts[user.department_id]) {
+        departmentCounts[user.department_id] = 0;
       }
-      departmentCounts[emp.department_id]++;
+      departmentCounts[user.department_id]++;
     });
 
     const stats = departments.map(dep => {
@@ -59,7 +59,7 @@ exports.getDepartmentStats = async (req, res) => {
       return {
         department_id: dep.department_id,
         department_name: dep.department_name,
-        employee_count: count,
+        user_count: count,
         percentage: `${percent}%`
       };
     });
@@ -69,7 +69,7 @@ exports.getDepartmentStats = async (req, res) => {
       data: stats,
       debug: {
         dateThreshold,
-        totalEmployees: employees.length
+        totalUsers: users.length
       }
     });
 
@@ -101,10 +101,10 @@ exports.getAgeDistribution = async (req, res) => {
       whereClause.hire_date = { [Op.gte]: dateThreshold };
     }
 
-    // Fetch employees with their birth dates
-    const employees = await Employee.findAll({
+    // Fetch users with their birth dates
+    const users = await User.findAll({
       where: whereClause,
-      attributes: ['birth_date', 'age_employee', 'hire_date']
+      attributes: ['birth_date', 'genre_employee', 'hire_date']
     });
 
     // Initialize age distribution object
@@ -115,11 +115,11 @@ exports.getAgeDistribution = async (req, res) => {
       "50-60": { homme: 0, femme: 0 }
     };
 
-    // Calculate age and categorize employees
-    employees.forEach(employee => {
-      const birthDate = new Date(employee.birth_date);
+    // Calculate age and categorize users
+    users.forEach(user => {
+      const birthDate = new Date(user.birth_date);
       const age = now.getFullYear() - birthDate.getFullYear();
-      const gender = employee.age_employee;
+      const gender = user.genre_employee;
 
       if (age >= 20 && age < 30) {
         ageDistribution["20-30"][gender]++;
@@ -137,8 +137,8 @@ exports.getAgeDistribution = async (req, res) => {
       ageDistribution,
       debug: {
         dateThreshold,
-        totalEmployees: employees.length,
-        firstEmployeeHireDate: employees[0]?.hire_date
+        totalUsers: users.length,
+        firstUserHireDate: users[0]?.hire_date
       }
     });
 

@@ -8,10 +8,6 @@ const User = sequelize.define('User', {
     autoIncrement: true,
     allowNull: false
   },
-  userName: {
-    type: DataTypes.STRING(200),
-    allowNull: false
-  },
   email_user: {
     type: DataTypes.STRING(200),
     allowNull: false,
@@ -22,8 +18,49 @@ const User = sequelize.define('User', {
     allowNull: false
   },
   role: {
-    type: DataTypes.ENUM('admin', 'employe'),
+    type: DataTypes.ENUM('admin', 'employe','Rh'),
     allowNull: false
+  },
+  first_name: {
+    type: DataTypes.STRING(50),
+    allowNull: false
+  },
+  last_name: {
+    type: DataTypes.STRING(50),
+    allowNull: false
+  },
+  birth_date: {
+    type: DataTypes.DATEONLY,
+    allowNull: true
+  },
+  hire_date: {
+    type: DataTypes.DATEONLY,
+    allowNull: true
+  },
+  department_id: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: 'departments', // table name
+      key: 'id_departement' // primary key in departments
+    }
+  },
+  position: {
+    type: DataTypes.STRING(100),
+    allowNull: true
+  },
+  salary: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: true
+  },
+  genre_employee: {
+    type: DataTypes.ENUM('homme', 'femme'),
+    allowNull: false
+  },
+  isValid: {
+    type: DataTypes.TINYINT,
+    allowNull: false,
+    defaultValue: 1
   }
 }, {
   tableName: 'user', // Table name in your database
