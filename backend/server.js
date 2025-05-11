@@ -1,31 +1,13 @@
-const express = require('express');
-const cors = require('cors');
-const userRoutes = require('./routes/userRoute');
-const employeeRoutes = require('./routes/employeeRoutes');
-
-const app = express();
-
-// Middleware
-app.use(cors());
-app.use(express.json());
-
-// Routes
-app.use('/users', userRoutes);
-app.use('/api/employees', employeeRoutes);
-
-// Test route
-app.get('/test', (req, res) => {
-  res.json({ message: 'Server is working!' });
-});
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ message: 'Something went wrong!' });
-});
+const app = require('./app');
 
 const PORT = process.env.PORT || 5000;
 
+// Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+  console.log('Available routes:');
+  console.log('- /test');
+  console.log('- /users/*');
+  console.log('- /api/employees/*');
+  console.log('- /api/absences/*');
 }); 

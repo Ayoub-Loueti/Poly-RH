@@ -1,10 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Clock, Calendar, BarChart } from 'lucide-react';
+import axios from 'axios';
 import VisualizationCard from '../components/dashboard/VisualizationCard';
 import FilterBar from '../components/common/FilterBar';
+import AbsenceTypeDistribution from '../components/dashboard/AbsenceTypeDistribution';
 import '../styles/Absenteeism.css';
 
 const Absenteeism: React.FC = () => {
+  const [absenceStats, setAbsenceStats] = useState<{
+    averageAbsenceRate: string;
+    rateChange: string;
+  } | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchAbsenceStats = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/absences/stats');
+        setAbsenceStats(response.data);
+        setError(null);
+      } catch (err) {
+        console.error('Error fetching absence stats:', err);
+        setError('Failed to fetch absence statistics');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAbsenceStats();
+  }, []);
+
   return (
     <div className="absenteeism-page">
       <div className="absenteeism-header">
@@ -18,8 +44,18 @@ const Absenteeism: React.FC = () => {
       <div className="absenteeism-metrics">
         <div className="metric-card">
           <h3>Overall Absence Rate</h3>
-          <div className="metric-value">4.2%</div>
-          <div className="metric-change negative">+0.8% from last month</div>
+          {loading ? (
+            <div className="metric-value">Loading...</div>
+          ) : error ? (
+            <div className="metric-value error">{error}</div>
+          ) : (
+            <>
+              <div className="metric-value">{absenceStats?.averageAbsenceRate}%</div>
+              <div className={`metric-change ${Number(absenceStats?.rateChange) >= 0 ? 'negative' : 'positive'}`}>
+                {Number(absenceStats?.rateChange) >= 0 ? '+' : ''}{absenceStats?.rateChange}% from last month
+              </div>
+            </>
+          )}
         </div>
         <div className="metric-card">
           <h3>Average Days/Employee</h3>
@@ -35,33 +71,12 @@ const Absenteeism: React.FC = () => {
 
       <div className="visualization-grid">
         <VisualizationCard 
-          title="Absence Distribution" 
-          subtitle="By department"
+          title="Absence Types" 
+          subtitle="Distribution by type"
           icon={<BarChart size={18} />}
           className="span-2"
         >
-          <div className="chart-placeholder bar-chart">
-            <div className="bar-container">
-              <div className="bar" style={{ height: '65%' }}></div>
-              <div className="bar" style={{ height: '85%' }}></div>
-              <div className="bar" style={{ height: '45%' }}></div>
-              <div className="bar" style={{ height: '75%' }}></div>
-              <div className="bar" style={{ height: '55%' }}></div>
-            </div>
-          </div>
-        </VisualizationCard>
-
-        <VisualizationCard 
-          title="Absence Types" 
-          subtitle="Distribution by category"
-          icon={<Clock size={18} />}
-        >
-          <div className="chart-placeholder pie-chart">
-            <div className="pie-segment s1"></div>
-            <div className="pie-segment s2"></div>
-            <div className="pie-segment s3"></div>
-            <div className="pie-segment s4"></div>
-          </div>
+          <AbsenceTypeDistribution />
         </VisualizationCard>
 
         <VisualizationCard 
