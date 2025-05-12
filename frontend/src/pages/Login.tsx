@@ -18,11 +18,15 @@ const Login: React.FC = () => {
     const userData = localStorage.getItem(USER_STORAGE_KEY);
     if (userData) {
       try {
-        // Verify that the stored data is valid JSON
-        JSON.parse(userData);
-        navigate('/');
+        const parsedData = JSON.parse(userData);
+        const role = parsedData.role;
+        // Navigate based on role
+        if (role === 'admin' || role === 'Rh') {
+          navigate('/');
+        } else if (role === 'employe') {
+          navigate('/mainlayout');
+        }
       } catch (e) {
-        // If JSON parsing fails, clear the invalid data
         localStorage.removeItem(USER_STORAGE_KEY);
       }
     }
@@ -53,12 +57,18 @@ const Login: React.FC = () => {
 
       // Login successful
       console.log('Login successful:', data);
-      
+
       // Store user data in localStorage
       localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(data.user));
-      
-      // Redirect to home page
-      navigate('/');
+      localStorage.setItem('role', JSON.stringify(data.user.role));
+
+      // Navigate based on role
+      const role = data.user.role;
+      if (role === 'admin' || role === 'Rh') {
+        navigate('/admin');
+      } else if (role === 'employe') {
+        navigate('/employee');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred during login');
     } finally {
@@ -143,7 +153,7 @@ const Login: React.FC = () => {
         <div className="features-content">
           <h2>Analytical HR Management</h2>
           <p>Transforming HR data into actionable insights for better decision making</p>
-          
+
           <div className="features-grid">
             <div className="feature-item">
               <div className="feature-icon" style={{ backgroundColor: 'rgba(0, 98, 255, 0.1)' }}>
@@ -154,7 +164,7 @@ const Login: React.FC = () => {
                 <p>Forecast turnover and identify at-risk employees</p>
               </div>
             </div>
-            
+
             <div className="feature-item">
               <div className="feature-icon" style={{ backgroundColor: 'rgba(40, 199, 111, 0.1)' }}>
                 <Lock size={24} color="var(--success-500)" />

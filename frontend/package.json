@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@babel/preset-react": "^7.27.1",
+    "@babel/preset-typescript": "^7.27.1",
     "@nivo/bar": "^0.92.2",
     "@nivo/core": "^0.92.2",
     "@nivo/pie": "^0.92.2",

@@ -4,6 +4,7 @@ const userRoutes = require('./routes/userRoute');
 const employeeRoutes = require('./routes/employeeRoutes');
 const absenceRoutes = require('./routes/absenceRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
+const absence = require ('./routes/absenceRoute');
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use('/api/absences', absenceRoutes);
 app.use('/api/employees', employeeRoutes);
 app.use('/users', userRoutes);
 app.use('/dashboard', dashboardRoutes);
+app.use('/absence', absence);
 
 console.log('Routes set up complete');
 

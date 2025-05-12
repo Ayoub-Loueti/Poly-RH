@@ -23,6 +23,10 @@ const Absence = sequelize.define('Absence', {
   absence_type: {
     type: DataTypes.STRING(50),
     allowNull: false
+  },
+  isAbOk:{
+    type: DataTypes.ENUM('attente','accepter','refuser'),
+    allowNull: false
   }
 }, {
   tableName: 'absences',

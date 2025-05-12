@@ -3,12 +3,25 @@ const router = express.Router();
 const { Op, Sequelize } = require('sequelize');
 const Absence = require('../models/AbsenceModel');
 const sequelize = require('../config/db');
+const absenceController = require('../controllers/absenceController');
 
 // Debug middleware for absence routes
 router.use((req, res, next) => {
   console.log(`[Absence Routes] ${req.method} ${req.url}`);
   next();
 });
+
+// Create a new absence request
+router.post('/create', absenceController.createAbsence);
+
+// Update absence status (accept/reject)
+router.post('/update-status', absenceController.updateAbsenceStatus);
+
+// Get all pending absences
+router.get('/pending', absenceController.getPendingAbsences);
+
+// Get all absences for a specific user
+router.get('/user-absences', absenceController.getUserAbsences);
 
 // Get all absences
 router.get('/', async (req, res) => {
