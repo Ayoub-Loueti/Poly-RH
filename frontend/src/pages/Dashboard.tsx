@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BarChart, LineChart, PieChart, ArrowUpRight, ArrowDownRight, Users, Calendar, TrendingDown, Award } from 'lucide-react';
+import { BarChart, LineChart, PieChart,  Users, Calendar, TrendingDown, Award } from 'lucide-react';
 import KpiCard from '../components/dashboard/KpiCard';
 import VisualizationCard from '../components/dashboard/VisualizationCard';
 import DepartmentComparison from '../components/dashboard/DepartmentComparison';

@@ -7,7 +7,7 @@ import './DepartmentDistribution.css';
 interface DepartmentData {
   department_id: number;
   department_name: string;
-  employee_count: number;
+  user_count: number;
   percentage: string;
 }
 
@@ -63,7 +63,7 @@ const DepartmentDistribution: React.FC<DepartmentDistributionProps> = ({ timeFil
   const chartData = departmentData.map(dept => ({
     id: dept.department_name,
     label: dept.department_name,
-    value: dept.employee_count,
+    value: dept.user_count,
     percentage: dept.percentage
   }));
 

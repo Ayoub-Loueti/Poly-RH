@@ -36,9 +36,22 @@ const Employee = sequelize.define('Employee', {
     type: DataTypes.DECIMAL(10, 2),
     allowNull: false
   },
-  age_employee: {
+  genre_employee: {
     type: DataTypes.ENUM('homme', 'femme'),
     allowNull: false
+  },
+  id_user: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: 'user',
+      key: 'id_user'
+    }
+  },
+  isValid: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: true
   }
 }, {
   tableName: 'employees',
