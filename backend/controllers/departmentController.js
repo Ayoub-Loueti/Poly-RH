@@ -1,6 +1,6 @@
 const { Op } = require('sequelize');
 const User = require('../models/userModel');
-const Department = require('../models/departmentModel');
+const Department = require('../models/DepartmentModel');
 
 exports.getDepartmentStats = async (req, res) => {
   try {

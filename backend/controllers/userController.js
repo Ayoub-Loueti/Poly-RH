@@ -30,7 +30,9 @@ exports.login = async (req, res) => {
         id: user.id_user,
         userName: user.userName,
         email: user.email_user,
-        role: user.role
+        role: user.role,
+        first_name: user.first_name,
+        last_name: user.last_name
       }
     });
   } catch (error) {

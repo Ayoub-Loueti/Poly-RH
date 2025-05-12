@@ -61,6 +61,11 @@ const User = sequelize.define('User', {
     type: DataTypes.TINYINT,
     allowNull: false,
     defaultValue: 1
+  },
+  isArchived: {
+    type: DataTypes.TINYINT,
+    allowNull: false,
+    defaultValue: 0
   }
 }, {
   tableName: 'user', // Table name in your database

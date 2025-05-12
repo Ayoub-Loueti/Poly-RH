@@ -170,15 +170,41 @@
 }
 
 .action-button {
-  background: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2);
   border: none;
-  color: var(--neutral-500);
+  border-radius: var(--radius-md);
   cursor: pointer;
-  transition: color var(--transition-fast);
+  transition: all var(--transition-fast);
+  margin-right: var(--space-2);
+  font-size: 0.875rem;
 }
 
-.action-button:hover {
-  color: var(--primary-500);
+.action-button.block {
+  padding: 4px 10px;
+  font-weight: 500;
+}
+
+.action-button.archive {
+  background-color: var(--error-100);
+  color: var(--error-600);
+  padding: 6px;
+}
+
+.action-button.archive:hover {
+  background-color: var(--error-200);
+}
+
+.action-button.restore {
+  background-color: var(--success-100);
+  color: var(--success-600);
+  padding: 6px;
+}
+
+.action-button.restore:hover {
+  background-color: var(--success-200);
 }
 
 .pagination {
@@ -266,4 +292,150 @@
     flex-direction: column;
     gap: var(--space-4);
   }
+}
+
+/* Add Employee Form Styles */
+.add-employee-form-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.add-employee-form {
+  background-color: white;
+  padding: 24px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.form-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  padding: 4px;
+}
+
+.close-button:hover {
+  color: #333;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.form-group {
+  flex: 1;
+  margin-bottom: 12px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #444;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.cancel-button {
+  padding: 8px 16px;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #333;
+}
+
+.cancel-button:hover {
+  background-color: #eaeaea;
+}
+
+.submit-button {
+  padding: 8px 16px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background-color: #3a7bc8;
+}
+
+.header-buttons {
+  display: flex;
+  gap: var(--space-4);
+}
+
+.archive-button {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background-color: var(--neutral-100);
+  color: var(--neutral-700);
+  border: 1px solid var(--neutral-300);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.archive-button:hover {
+  background-color: var(--neutral-200);
+  border-color: var(--neutral-400);
+}
+
+.archive-button.active {
+  background-color: var(--primary-100);
+  border-color: var(--primary-300);
+  color: var(--primary-700);
 }
