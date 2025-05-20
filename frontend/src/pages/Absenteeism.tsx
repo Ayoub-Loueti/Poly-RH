@@ -1,34 +1,69 @@
 import React, { useState, useEffect } from 'react';
-import { Clock, Calendar, BarChart } from 'lucide-react';
+import { Clock, Calendar, BarChart, Check, X } from 'lucide-react';
 import axios from 'axios';
 import VisualizationCard from '../components/dashboard/VisualizationCard';
 import FilterBar from '../components/common/FilterBar';
 import AbsenceTypeDistribution from '../components/dashboard/AbsenceTypeDistribution';
 import '../styles/Absenteeism.css';
 
+interface Absence {
+  absence_id: number;
+  id_user: number;
+  start_date: string;
+  end_date: string;
+  absence_type: string;
+  isAbOk: string;
+}
+
 const Absenteeism: React.FC = () => {
   const [absenceStats, setAbsenceStats] = useState<{
     averageAbsenceRate: string;
     rateChange: string;
   } | null>(null);
+  const [pendingAbsences, setPendingAbsences] = useState<Absence[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchAbsenceStats = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/absences/stats');
-        setAbsenceStats(response.data);
-        setError(null);
-      } catch (err) {
-        console.error('Error fetching absence stats:', err);
-        setError('Failed to fetch absence statistics');
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchAbsenceStats = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/absences/stats');
+      setAbsenceStats(response.data);
+      setError(null);
+    } catch (err) {
+      console.error('Error fetching absence stats:', err);
+      setError('Failed to fetch absence statistics');
+    }
+  };
 
+  const fetchPendingAbsences = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/absences/pending');
+      setPendingAbsences(response.data.data);
+    } catch (err) {
+      console.error('Error fetching pending absences:', err);
+      setError('Failed to fetch pending absences');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleStatusUpdate = async (absenceId: number, status: 'accepter' | 'refuser') => {
+    try {
+      await axios.post('http://localhost:5000/api/absences/update-status', {
+        absence_id: absenceId,
+        status: status
+      });
+      // Refresh the pending absences list
+      fetchPendingAbsences();
+    } catch (err) {
+      console.error('Error updating absence status:', err);
+      setError('Failed to update absence status');
+    }
+  };
+
+  useEffect(() => {
     fetchAbsenceStats();
+    fetchPendingAbsences();
   }, []);
 
   return (
@@ -36,6 +71,7 @@ const Absenteeism: React.FC = () => {
       <div className="absenteeism-header">
         <div>
           <h1>Absenteeism Analysis</h1>
+          <br></br>
           <p className="absenteeism-subtitle">Monitor and analyze employee absence patterns</p>
         </div>
         <FilterBar />
@@ -79,17 +115,54 @@ const Absenteeism: React.FC = () => {
           <AbsenceTypeDistribution />
         </VisualizationCard>
 
-        <VisualizationCard 
-          title="Monthly Trend" 
-          subtitle="Last 12 months"
-          icon={<Calendar size={18} />}
-        >
-          <div className="chart-placeholder line-chart">
-            <div className="line-segment"></div>
-            <div className="line-segment up"></div>
-            <div className="line-segment down"></div>
-          </div>
-        </VisualizationCard>
+        <div className="pending-absences-card">
+          <h2>Pending Absence Requests</h2>
+          {loading ? (
+            <div className="loading">Loading...</div>
+          ) : error ? (
+            <div className="error-message">{error}</div>
+          ) : (
+            <div className="absences-table-container">
+              <table className="absences-table">
+                <thead>
+                  <tr>
+                    <th>Employee ID</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Type</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {pendingAbsences.map((absence) => (
+                    <tr key={absence.absence_id}>
+                      <td>{absence.id_user}</td>
+                      <td>{new Date(absence.start_date).toLocaleDateString()}</td>
+                      <td>{new Date(absence.end_date).toLocaleDateString()}</td>
+                      <td>{absence.absence_type}</td>
+                      <td className="action-buttons">
+                        <button
+                          className="accept-button"
+                          onClick={() => handleStatusUpdate(absence.absence_id, 'accepter')}
+                        >
+                          <Check size={16} />
+                          Accept
+                        </button>
+                        <button
+                          className="reject-button"
+                          onClick={() => handleStatusUpdate(absence.absence_id, 'refuser')}
+                        >
+                          <X size={16} />
+                          Reject
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

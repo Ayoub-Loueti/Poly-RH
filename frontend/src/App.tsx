@@ -9,6 +9,7 @@ import Performance from './pages/Performance';
 import Reports from './pages/Reports';
 import Settings from './pages/Settings';
 import Login from './pages/Login';
+import Requests from './pages/Requests';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { RequestProvider } from './context/RequestContext';
@@ -33,6 +34,7 @@ function App() {
               <Route index element={<Dashboard />} />
               <Route path="employees" element={<Employees />} />
               <Route path="RHCom" element={<RHCom />} />
+              <Route path="requests" element={<Requests />} />
               <Route path="turnover" element={<Turnover />} />
               <Route path="absenteeism" element={<Absenteeism />} />
               <Route path="performance" element={<Performance />} />

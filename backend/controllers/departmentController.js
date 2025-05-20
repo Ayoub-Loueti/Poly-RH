@@ -1,6 +1,7 @@
 const { Op } = require('sequelize');
 const User = require('../models/userModel');
 const Department = require('../models/DepartmentModel');
+const PDFDocument = require('pdfkit');
 
 exports.getDepartmentStats = async (req, res) => {
   try {
@@ -145,6 +146,66 @@ exports.getAgeDistribution = async (req, res) => {
   } catch (error) {
     console.error('Error getting age distribution:', error);
     return res.status(500).json({ message: 'Server error while calculating age distribution' });
+  }
+};
+
+exports.exportDepartmentsToPDF = async (req, res) => {
+  try {
+    // Fetch departments and users
+    const departments = await Department.findAll();
+    const users = await User.findAll();
+
+    // Count users per department
+    const departmentCounts = {};
+    users.forEach(user => {
+      if (!departmentCounts[user.department_id]) {
+        departmentCounts[user.department_id] = 0;
+      }
+      departmentCounts[user.department_id]++;
+    });
+
+    // Create PDF
+    const doc = new PDFDocument();
+    
+    // Set headers
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'attachment; filename=departments.pdf');
+
+    // Pipe to response
+    doc.pipe(res);
+
+    // Add content
+    doc.fontSize(25).text('Department Report', { align: 'center' });
+    doc.moveDown();
+
+    // Add departments table
+    doc.fontSize(12);
+    doc.text('Department Name', 50, 150);
+    doc.text('Type', 250, 150);
+    doc.text('Employees', 400, 150);
+    doc.moveDown();
+
+    let y = 180;
+    departments.forEach(dep => {
+      const count = departmentCounts[dep.department_id] || 0;
+      doc.text(dep.department_name, 50, y);
+      doc.text(dep.departement_type, 250, y);
+      doc.text(count.toString(), 400, y);
+      y += 20;
+    });
+
+    // Add total
+    doc.moveDown();
+    const totalEmployees = Object.values(departmentCounts).reduce((a, b) => a + b, 0);
+    doc.text(`Total Departments: ${departments.length}`, 50, y + 20);
+    doc.text(`Total Employees: ${totalEmployees}`, 50, y + 40);
+
+    // Finalize
+    doc.end();
+
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ message: 'Error generating PDF' });
   }
 };
 

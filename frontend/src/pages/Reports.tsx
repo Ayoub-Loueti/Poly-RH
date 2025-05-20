@@ -43,6 +43,7 @@ const Reports: React.FC = () => {
       <div className="reports-header">
         <div>
           <h1>Reports</h1>
+          <br></br>
           <p className="reports-subtitle">Generate and download HR reports</p>
         </div>
         <button className="generate-report-button">

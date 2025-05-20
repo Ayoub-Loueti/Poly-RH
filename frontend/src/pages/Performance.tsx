@@ -10,6 +10,7 @@ const Performance: React.FC = () => {
       <div className="performance-header">
         <div>
           <h1>Performance Management</h1>
+          <br></br>
           <p className="performance-subtitle">Track and analyze employee performance metrics</p>
         </div>
         <FilterBar />

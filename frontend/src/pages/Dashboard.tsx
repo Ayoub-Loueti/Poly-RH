@@ -18,6 +18,7 @@ const Dashboard: React.FC = () => {
       <div className="dashboard-header">
         <div>
           <h1>HR Analytics Dashboard</h1>
+          <br></br>
           <p className="dashboard-subtitle">Overview of key HR performance indicators</p>
         </div>
         <FilterBar />
@@ -59,21 +60,7 @@ const Dashboard: React.FC = () => {
       </div>
       
       <div className="visualization-grid">
-        <VisualizationCard 
-          title="Turnover Trend" 
-          subtitle="Last 12 months"
-          icon={<LineChart size={18} />}
-          className="span-2"
-        >
-          <div className="chart-placeholder line-chart">
-            <div className="line-segment"></div>
-            <div className="line-segment up"></div>
-            <div className="line-segment down"></div>
-            <div className="line-segment"></div>
-            <div className="line-segment up"></div>
-            <div className="line-segment down-sharp"></div>
-          </div>
-        </VisualizationCard>
+       
         
         <VisualizationCard 
           title="Department Distribution" 
@@ -100,6 +87,22 @@ const Dashboard: React.FC = () => {
           className="span-2"
         >
           <DepartmentComparison />
+        </VisualizationCard>
+        
+         <VisualizationCard 
+          title="Turnover Trend" 
+          subtitle="Last 12 months"
+          icon={<LineChart size={18} />}
+          className="span-2"
+        >
+          <div className="chart-placeholder line-chart">
+            <div className="line-segment"></div>
+            <div className="line-segment up"></div>
+            <div className="line-segment down"></div>
+            <div className="line-segment"></div>
+            <div className="line-segment up"></div>
+            <div className="line-segment down-sharp"></div>
+          </div>
         </VisualizationCard>
         
         <VisualizationCard 

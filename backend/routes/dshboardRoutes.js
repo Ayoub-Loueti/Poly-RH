@@ -5,5 +5,6 @@ const dashboardController = require('../controllers/departmentController');
 // Get all employees
 router.get('/depStats', dashboardController.getDepartmentStats);
 router.get('/ageDistribution', dashboardController.getAgeDistribution);
+router.get('/export-pdf', dashboardController.exportDepartmentsToPDF);
 
 module.exports = router; 

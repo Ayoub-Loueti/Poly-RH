@@ -292,6 +292,7 @@ const Employees: React.FC = () => {
       <div className="employees-header">
         <div>
           <h1>Employees</h1>
+          <br></br>
           <p className="employees-subtitle">Manage and view all employee information</p>
         </div>
         <div className="header-buttons">

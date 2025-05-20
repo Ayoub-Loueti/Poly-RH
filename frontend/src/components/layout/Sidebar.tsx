@@ -2,7 +2,8 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { 
   BarChart, Users, TrendingDown, Clock, 
-  Award, FileText, Settings, LogOut, BarChart2, UserPlus 
+  Award, FileText, Settings, LogOut, BarChart2, UserPlus,
+  MessageSquare
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import './Sidebar.css';
@@ -58,37 +59,41 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed }) => {
       </div>
       
       <nav className="sidebar-nav">
-        <NavLink to="/" className={({ isActive }) => isActive ? 'active' : ''}>
+        <NavLink to="/admin" end className={({ isActive }) => isActive ? 'active' : ''}>
           <BarChart size={20} />
           {!collapsed && <span>Dashboard</span>}
         </NavLink>
-        <NavLink to="/employees" className={({ isActive }) => isActive ? 'active' : ''}>
+        <NavLink to="/admin/employees" className={({ isActive }) => isActive ? 'active' : ''}>
           <Users size={20} />
           {!collapsed && <span>Employees</span>}
         </NavLink>
         {isAdmin && (
-          <NavLink to="/rhcom" className={({ isActive }) => isActive ? 'active' : ''}>
+          <NavLink to="/admin/rhcom" className={({ isActive }) => isActive ? 'active' : ''}>
             <UserPlus size={20} />
             {!collapsed && <span>RH Community</span>}
           </NavLink>
         )}
-        <NavLink to="/turnover" className={({ isActive }) => isActive ? 'active' : ''}>
+        <NavLink to="/admin/requests" className={({ isActive }) => isActive ? 'active' : ''}>
+          <MessageSquare size={20} />
+          {!collapsed && <span>Requests</span>}
+        </NavLink>
+        <NavLink to="/admin/turnover" className={({ isActive }) => isActive ? 'active' : ''}>
           <TrendingDown size={20} />
           {!collapsed && <span>Turnover</span>}
         </NavLink>
-        <NavLink to="/absenteeism" className={({ isActive }) => isActive ? 'active' : ''}>
+        <NavLink to="/admin/absenteeism" className={({ isActive }) => isActive ? 'active' : ''}>
           <Clock size={20} />
           {!collapsed && <span>Absenteeism</span>}
         </NavLink>
-        <NavLink to="/performance" className={({ isActive }) => isActive ? 'active' : ''}>
+        <NavLink to="/admin/performance" className={({ isActive }) => isActive ? 'active' : ''}>
           <Award size={20} />
           {!collapsed && <span>Performance</span>}
         </NavLink>
-        <NavLink to="/reports" className={({ isActive }) => isActive ? 'active' : ''}>
+        <NavLink to="/admin/reports" className={({ isActive }) => isActive ? 'active' : ''}>
           <FileText size={20} />
           {!collapsed && <span>Reports</span>}
         </NavLink>
-        <NavLink to="/settings" className={({ isActive }) => isActive ? 'active' : ''}>
+        <NavLink to="/admin/settings" className={({ isActive }) => isActive ? 'active' : ''}>
           <Settings size={20} />
           {!collapsed && <span>Settings</span>}
         </NavLink>

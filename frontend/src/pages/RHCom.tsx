@@ -125,6 +125,7 @@ const RHCom: React.FC = () => {
       <div className="employees-header">
         <div>
           <h1>RH Community</h1>
+          <br></br>
           <p className="employees-subtitle">Manage and view all RH users</p>
         </div>
         <button className="add-employee-button">

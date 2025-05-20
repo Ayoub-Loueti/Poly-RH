@@ -215,3 +215,97 @@
 .no-data {
   color: var(--neutral-500);
 }
+
+.pending-absences-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 24px;
+  grid-column: span 2;
+}
+
+.pending-absences-card h2 {
+  margin: 0 0 20px 0;
+  color: var(--neutral-900);
+  font-size: 1.25rem;
+}
+
+.absences-table-container {
+  overflow-x: auto;
+}
+
+.absences-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+
+.absences-table th,
+.absences-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--neutral-200);
+}
+
+.absences-table th {
+  background-color: var(--neutral-50);
+  font-weight: 600;
+  color: var(--neutral-700);
+}
+
+.absences-table tbody tr:hover {
+  background-color: var(--neutral-50);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.accept-button,
+.reject-button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.accept-button {
+  background-color: var(--success-50);
+  color: var(--success-700);
+}
+
+.accept-button:hover {
+  background-color: var(--success-100);
+}
+
+.reject-button {
+  background-color: var(--error-50);
+  color: var(--error-700);
+}
+
+.reject-button:hover {
+  background-color: var(--error-100);
+}
+
+.loading {
+  text-align: center;
+  padding: 24px;
+  color: var(--neutral-600);
+}
+
+.error-message {
+  text-align: center;
+  padding: 24px;
+  color: var(--error-600);
+  background-color: var(--error-50);
+  border-radius: 6px;
+  margin: 16px 0;
+}

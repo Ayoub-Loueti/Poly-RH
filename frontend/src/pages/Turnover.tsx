@@ -10,6 +10,7 @@ const Turnover: React.FC = () => {
       <div className="turnover-header">
         <div>
           <h1>Employee Turnover</h1>
+          <br></br>
           <p className="turnover-subtitle">Track and analyze employee turnover patterns</p>
         </div>
         <FilterBar />
